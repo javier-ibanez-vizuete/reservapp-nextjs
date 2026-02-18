@@ -14,7 +14,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="es" className={`${interTitleFont.variable} ${interSansFont.variable}`}>
-            <body className="antialiased">{children}</body>
+            <body className="antialiased">
+                <header>NAVIGATION</header>
+                {children}
+            </body>
         </html>
     );
 }
