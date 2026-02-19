@@ -5,6 +5,7 @@ export default function HomePage() {
     return (
         <main>
             <Typography variant="h1">ReservApp</Typography>
+            <p>TIPO INTER</p>
         </main>
     );
 }

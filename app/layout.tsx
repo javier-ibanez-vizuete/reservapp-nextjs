@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
@@ -18,13 +18,25 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
     return (
-        <html lang="es" className={`${interTitleFont.variable} ${interSansFont.variable}`}>
+        <html
+            lang="es"
+            suppressHydrationWarning
+            className={`${interTitleFont.variable} ${interSansFont.variable}`}
+        >
             <body className="antialiased">
                 <AppRouterCacheProvider>
                     <ThemeProvider>
                         <Navbar />
+                        <Box sx={{ height: "64px" }}></Box>
 
-                        <Container maxWidth="xl" sx={{ marginTop: "16px" }}>
+                        <Container
+                            maxWidth="xl"
+                            sx={{
+                                marginTop: "64px",
+                                display: "flex",
+                                flexDirection: "column",
+                            }}
+                        >
                             {children}
                         </Container>
                     </ThemeProvider>
