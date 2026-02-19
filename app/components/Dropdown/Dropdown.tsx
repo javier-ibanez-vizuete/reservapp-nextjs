@@ -13,7 +13,7 @@ import React, {
     type RefAttributes,
 } from "react";
 
-import { EventsType, KeyboardKey, SizeTypeFull, TriggerType } from "@/app/types/index.type";
+import { EventsType, ExtendedSizes, KeyboardKey, TriggerType } from "@/app/types/index.type";
 import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 import DropdownMenu, { type DropdownMenuProps } from "./DropdownMenu";
@@ -41,9 +41,9 @@ export type DropdownProps = {
     children: ReactNode;
     trigger?: TriggerType;
     placement?: DropdownPlacementValues;
-    padding?: SizeTypeFull;
-    gap?: SizeTypeFull;
-    rounded?: SizeTypeFull;
+    padding?: ExtendedSizes;
+    gap?: ExtendedSizes;
+    rounded?: ExtendedSizes;
     disabled?: boolean;
     className?: string;
 } & HTMLAttributes<HTMLDivElement>;

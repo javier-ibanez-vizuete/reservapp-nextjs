@@ -1,6 +1,6 @@
 "use client";
 
-import { KeyboardKey, SizeTypeFull } from "@/app/types/index.type";
+import { ExtendedSizes, KeyboardKey } from "@/app/types/index.type";
 import { clsx } from "clsx";
 import {
     KeyboardEvent,
@@ -16,7 +16,7 @@ export type DropdownItemProps = {
     children: ReactNode;
     onClick?: () => void;
     onClose?: () => void;
-    padding?: SizeTypeFull | "2xs";
+    padding?: ExtendedSizes | "2xs";
     disabled?: boolean;
     className?: string;
 } & HTMLAttributes<HTMLDivElement>;
@@ -61,7 +61,7 @@ function DropdownItem({
         [disabled]
     );
 
-    const variantsPadding: Record<SizeTypeFull | "2xs" | "default", string> = useMemo(
+    const variantsPadding: Record<ExtendedSizes | "2xs" | "default", string> = useMemo(
         () => ({
             default: "px-3 py-1.5",
             none: " ",

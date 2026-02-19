@@ -31,7 +31,6 @@ export async function proxy(request: NextRequest) {
         })
 
         const userResponse = await response.json();
-        console.log(userResponse)
 
         if (!userResponse?.user) return NextResponse.redirect(new URL(PathTypes.LOGIN, request.url))
 

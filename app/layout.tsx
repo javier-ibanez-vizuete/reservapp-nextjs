@@ -39,6 +39,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                                 marginTop: "64px",
                                 display: "flex",
                                 flexDirection: "column",
+                                paddingTop: "20px",
                             }}
                         >
                             {children}

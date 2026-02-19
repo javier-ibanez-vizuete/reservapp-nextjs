@@ -36,8 +36,6 @@ export async function registerUserAction(prevState: RegisterFormState, formData:
     const validatedFields = RegisterFormSchema.safeParse(fields);
 
     if (!validatedFields.success) {
-        console.log("Error En Campos de Formulario")
-        console.log(validatedFields)
 
         const flattenedErrors = z.flattenError(validatedFields.error);
 
@@ -49,7 +47,6 @@ export async function registerUserAction(prevState: RegisterFormState, formData:
             data: fields
         }
     }
-    console.log("Datos en Servidor Validados con Exito")
     const datafields = validatedFields.data;
     const userData = {
         role: UserRole.USER,

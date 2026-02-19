@@ -1,7 +1,7 @@
 "use client";
 
 import { Theme, useThemeStore } from "@/app/theme/useThemeStore";
-import { SizeTypeFull, VariantType } from "@/app/types/index.type";
+import { ExtendedSizes, VariantType } from "@/app/types/index.type";
 import { clsx } from "clsx";
 import {
     forwardRef,
@@ -15,8 +15,8 @@ import {
 export type DropdownTriggerProps = {
     children: ReactNode;
     variant?: VariantType;
-    padding?: SizeTypeFull | "2xs" | "default";
-    rounded?: SizeTypeFull;
+    padding?: ExtendedSizes | "2xs" | "default";
+    rounded?: ExtendedSizes;
     onClick?: (event: MouseEvent<HTMLDivElement>) => void;
     onKeyDown?: (event: KeyboardEvent<HTMLDivElement>) => void;
     isOpen?: boolean;
@@ -139,7 +139,7 @@ export const DropdownTrigger = forwardRef<HTMLDivElement, DropdownTriggerProps>(
             [theme]
         );
 
-        const variantsPadding: Record<SizeTypeFull | "2xs" | "default", string> = useMemo(
+        const variantsPadding: Record<ExtendedSizes | "2xs" | "default", string> = useMemo(
             () => ({
                 default: "px-3 py-1.5",
                 none: " ",
@@ -154,7 +154,7 @@ export const DropdownTrigger = forwardRef<HTMLDivElement, DropdownTriggerProps>(
             []
         );
 
-        const variantsRounded: Record<SizeTypeFull | "default", string> = useMemo(
+        const variantsRounded: Record<ExtendedSizes | "default", string> = useMemo(
             () => ({
                 default: "rounded",
                 none: " ",

@@ -1,7 +1,7 @@
 "use client";
 
 import { Theme, useThemeStore } from "@/app/theme/useThemeStore";
-import { DirectionType, SizeTypeFull, VariantType } from "@/app/types/index.type";
+import { DirectionType, ExtendedSizes, VariantType } from "@/app/types/index.type";
 import { clsx } from "clsx";
 import React, { HTMLAttributes, memo, ReactNode, useEffect, useMemo, useRef } from "react";
 import { DropdownItemProps } from "./DropdownItem";
@@ -12,9 +12,9 @@ export type DropdownMenuProps = {
     onClose?: () => void;
     placement?: string;
     variant?: VariantType | "background" | "accent";
-    padding?: SizeTypeFull;
-    gap?: SizeTypeFull;
-    rounded?: SizeTypeFull;
+    padding?: ExtendedSizes;
+    gap?: ExtendedSizes;
+    rounded?: ExtendedSizes;
     className?: string;
     direction?: "row" | "col";
 } & HTMLAttributes<HTMLDivElement>;
