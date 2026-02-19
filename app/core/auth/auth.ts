@@ -1,7 +1,6 @@
 "use server"
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import { registerApi } from "./auth.api";
 import { RegisterFormState, UserRole } from "./auth.type";
@@ -81,6 +80,13 @@ export async function registerUserAction(prevState: RegisterFormState, formData:
 
     const cookieStore = await cookies();
     cookieStore.set("token", apiResponse.token, cookieConfig)
-    redirect("/profile")
-    // TODO: SEGUIR EL VIDEO DE MIDUDEV PARA CONSEGUIR LOS DATOS
+    return {
+        success: true,
+        message: "Usuario Registrado con Exito",
+        serverError: undefined,
+        errors: null,
+        data: validatedFields.data,
+        user: apiResponse.user
+    }
+
 }

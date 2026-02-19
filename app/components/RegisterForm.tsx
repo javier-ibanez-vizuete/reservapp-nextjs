@@ -12,12 +12,14 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { useActionState, useCallback, useState } from "react";
+import { useActionState, useCallback, useEffect, useState } from "react";
 
+import { useRouter } from "next/navigation";
 import { AvatarType, RegisterFormState } from "../core/auth/auth.type";
+import { useUserStore } from "../core/auth/useUserStore";
 import { AVATAR_DATA } from "../data/avatarData";
 import { actions } from "../lib/actions";
-import { TriggerType } from "../types/index.type";
+import { PathTypes, TriggerType } from "../types/index.type";
 import { Dropdown } from "./Dropdown/Dropdown";
 import DropdownItem from "./Dropdown/DropdownItem";
 import DropdownMenu from "./Dropdown/DropdownMenu";
@@ -41,13 +43,24 @@ export const INITIAL_STATE: RegisterFormState = {
         avatarWidth: AVATAR_DATA[0].width.toString(),
         avatarHeight: AVATAR_DATA[0].height.toString(),
     },
+    user: undefined,
 };
 
 export function RegisterForm() {
-    const [selectedImage, setSelectedImage] = useState(AVATAR_DATA[0]);
-    const [formState, formAction] = useActionState(actions.auth.registerUserAction, INITIAL_STATE);
+    const setUser = useUserStore((state) => state.setUser);
+    const router = useRouter();
 
+    const [selectedImage, setSelectedImage] = useState(AVATAR_DATA[0]);
+    const [formState, formAction, isPending] = useActionState(actions.auth.registerUserAction, INITIAL_STATE);
     const handleSelectAvatar = useCallback((avatar: AvatarType) => setSelectedImage(avatar), []);
+
+    useEffect(() => {
+        if (!formState.data) return;
+        if (formState.success && formState.user) {
+            setUser(formState?.user);
+            router.push("/profile");
+        }
+    }, [formState.success, formState.data]);
 
     return (
         <form action={formAction}>
@@ -100,7 +113,7 @@ export function RegisterForm() {
                             name="password2"
                             type="password"
                             label="Repetir Contraseña"
-                            defaultValue={formState.data?.password2}
+                            defaultValue={formState?.data?.password2}
                             placeholder="Contraseña2"
                         />
                         {formState.errors?.password2 && <FormError error={formState.errors.password2} />}
@@ -141,10 +154,12 @@ export function RegisterForm() {
 
                     {formState.serverError && <FormError error={[formState.serverError]} />}
                     <CardActions>
-                        <Button type="submit">Enviar</Button>
-                        <Button>Cancelar</Button>
+                        <Button disabled={isPending} type="submit">
+                            Enviar
+                        </Button>
+                        <Button disabled={isPending}>Cancelar</Button>
                     </CardActions>
-                    <Link href={"/login"}>Ir a Login</Link>
+                    <Link href={PathTypes.LOGIN}>Ir a Login</Link>
                 </CardContent>
             </Card>
         </form>

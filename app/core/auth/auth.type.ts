@@ -27,13 +27,16 @@ export type AvatarType = {
 }
 
 export type RegisterForm = {
-    role: UserRole,
-    name: string;
-    email: string;
-    password: string;
-    avatar: AvatarType;
-    phoneNumber: string;
-    address: string;
+    name?: FormDataEntryValue | null,
+    email?: FormDataEntryValue | null,
+    address?: FormDataEntryValue | null,
+    phoneNumber?: FormDataEntryValue | null,
+    password?: FormDataEntryValue | null,
+    password2?: FormDataEntryValue | null,
+    avatarUrl?: FormDataEntryValue | null,
+    avatarAlt?: FormDataEntryValue | null,
+    avatarWidth?: FormDataEntryValue | null,
+    avatarHeight?: FormDataEntryValue | null,
 }
 
 export type LoginForm = {
@@ -54,18 +57,7 @@ export enum UserRole {
 }
 
 export type RegisterFormState = {
-    data?: {
-        name?: FormDataEntryValue | null,
-        email?: FormDataEntryValue | null,
-        address?: FormDataEntryValue | null,
-        phoneNumber?: FormDataEntryValue | null,
-        password?: FormDataEntryValue | null,
-        password2?: FormDataEntryValue | null,
-        avatarUrl?: FormDataEntryValue | null,
-        avatarAlt?: FormDataEntryValue | null,
-        avatarWidth?: FormDataEntryValue | null,
-        avatarHeight?: FormDataEntryValue | null,
-    },
+    data?: RegisterForm,
     success?: boolean,
     message?: string,
     serverError?: string,
@@ -81,4 +73,5 @@ export type RegisterFormState = {
         avatarWidth?: string[],
         avatarHeight?: string[]
     } | null,
+    user?: User,
 }
