@@ -5,6 +5,10 @@ const sharedConfig = {
     typography: {
         fontFamily: "var(--font-inter-title)",
 
+        h1: {
+            fontSize: "3rem",
+        },
+
         body1: { fontFamily: "var(--font-inter-sans)" },
         body2: { fontFamily: "var(--font-inter-sans)" },
         subtitle1: { fontFamily: "var(--font-inter-sans)" },

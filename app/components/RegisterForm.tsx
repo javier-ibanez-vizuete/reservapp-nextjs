@@ -2,12 +2,14 @@
 
 import { Card, CardContent, Container, InputBase, Stack, TextField, Typography } from "@mui/material";
 import { useActionState, useCallback, useEffect, useMemo, useState } from "react";
+import { RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AvatarType, RegisterFormState } from "../core/auth/auth.type";
 import { useUserStore } from "../core/auth/useUserStore";
 import { AVATAR_DATA } from "../data/avatarData";
+import { getDataFromSessionStorage } from "../helper/storage";
 import { useDevice } from "../hooks/useDevice";
 import { actions } from "../lib/actions";
 import { PathTypes, TriggerType } from "../types/index.type";
@@ -16,9 +18,20 @@ import DropdownItem from "./Dropdown/DropdownItem";
 import DropdownMenu from "./Dropdown/DropdownMenu";
 import { DropdownTrigger } from "./Dropdown/DropdownTrigger";
 import { FormError } from "./FormError";
+import Button from "./ui/Button";
 import Image from "./ui/Image";
 import ImageContainer from "./ui/ImageContainer";
 import LoadingButton from "./ui/LoadingButton";
+
+type PasswordViewType = {
+    password: boolean;
+    password2: boolean;
+};
+
+const INITIAL_PASS_VIEW: PasswordViewType = {
+    password: false,
+    password2: false,
+};
 
 export const INITIAL_STATE: RegisterFormState = {
     success: false,
@@ -48,15 +61,26 @@ export function RegisterForm() {
     const setUser = useUserStore((state) => state.setUser);
     const router = useRouter();
 
+    const [passwordView, setPasswordView] = useState(() => {
+        const passwordViewFromStorage = getDataFromSessionStorage<PasswordViewType>("passwordView");
+        if (passwordViewFromStorage) return passwordViewFromStorage as PasswordViewType;
+        return INITIAL_PASS_VIEW;
+    });
     const [selectedImage, setSelectedImage] = useState(AVATAR_DATA[0]);
     const [formState, formAction, isPending] = useActionState(actions.auth.registerUserAction, INITIAL_STATE);
+
     const handleSelectAvatar = useCallback((avatar: AvatarType) => setSelectedImage(avatar), []);
+    const handlePasswordView = useCallback(
+        (inputName: "password" | "password2") =>
+            setPasswordView((prev) => ({ ...prev, [inputName]: !prev[inputName] })),
+        []
+    );
 
     useEffect(() => {
         if (!formState.data) return;
         if (formState.success && formState.user) {
             setUser(formState?.user);
-            router.push("/profile");
+            router.push(PathTypes.PROFILE);
         }
     }, [formState.success, formState.data]);
 
@@ -68,8 +92,8 @@ export function RegisterForm() {
     return (
         <form action={formAction}>
             <Container maxWidth={isMobile ? "xs" : "sm"}>
-                <Card sx={{ overflow: "visible" }}>
-                    <CardContent className="flex flex-col gap-2">
+                <Card>
+                    <CardContent className="flex flex-col gap-2" sx={{ overflow: "visible" }}>
                         <Typography variant="h1" className="text-center">
                             Registrarse
                         </Typography>
@@ -113,25 +137,47 @@ export function RegisterForm() {
                                 {formState.errors?.phoneNumber && (
                                     <FormError error={formState.errors.phoneNumber} />
                                 )}
-                                <TextField
-                                    name="password"
-                                    type="password"
-                                    label="Contraseña"
-                                    defaultValue={formState.data?.password}
-                                    placeholder="Contraseña2"
-                                    size={"small"}
-                                />
+                                <div className={"relative flex"}>
+                                    <TextField
+                                        name="password"
+                                        type={passwordView.password ? "text" : "password"}
+                                        label="Contraseña"
+                                        defaultValue={formState.data?.password}
+                                        placeholder="Contraseña2"
+                                        size={"small"}
+                                        className="flex-1"
+                                    />
+                                    <Button
+                                        type="button"
+                                        className="absolute right-4 top-1/2 -translate-y-1/2"
+                                        variant="none"
+                                        onClick={() => handlePasswordView("password")}
+                                    >
+                                        {passwordView.password ? <RiEyeOffLine /> : <RiEyeLine />}
+                                    </Button>
+                                </div>
                                 {formState.errors?.password && (
                                     <FormError error={formState.errors.password} />
                                 )}
-                                <TextField
-                                    name="password2"
-                                    type="password"
-                                    label="Repetir Contraseña"
-                                    defaultValue={formState?.data?.password2}
-                                    placeholder="Contraseña2"
-                                    size={"small"}
-                                />
+                                <div className={"relative flex"}>
+                                    <TextField
+                                        name="password2"
+                                        type={passwordView.password2 ? "text" : "password"}
+                                        label="Repetir Contraseña"
+                                        defaultValue={formState?.data?.password2}
+                                        placeholder="Contraseña2"
+                                        size={"small"}
+                                        className="flex-1"
+                                    />
+                                    <Button
+                                        type="button"
+                                        className="absolute right-4 top-1/2 -translate-y-1/2"
+                                        variant="none"
+                                        onClick={() => handlePasswordView("password2")}
+                                    >
+                                        {passwordView.password ? <RiEyeOffLine /> : <RiEyeLine />}
+                                    </Button>
+                                </div>
                                 {formState.errors?.password2 && (
                                     <FormError error={formState.errors.password2} />
                                 )}
@@ -196,7 +242,9 @@ export function RegisterForm() {
                             >
                                 Enviar
                             </LoadingButton>
-                            <LoadingButton variant="danger">Cancelar</LoadingButton>
+                            <LoadingButton type="reset" variant="danger">
+                                Cancelar
+                            </LoadingButton>
                         </Stack>
                         <Stack
                             direction={isMobile ? "column" : "row"}

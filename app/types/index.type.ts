@@ -61,3 +61,5 @@ export interface ImageSourceType {
     url: string;
     alt?: string
 }
+
+export type KeyStorageType = string;
